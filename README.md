@@ -32,10 +32,11 @@
 ![image](https://github.com/user-attachments/assets/91e8fc42-6486-4b83-b754-08b8e03e77da)
 *   `/set_profile` - Заполнение профиля пользователя
 ![image](https://github.com/user-attachments/assets/323be59b-e2b2-4b46-8636-c41ddbf324f7)
-![image](https://github.com/user-attachments/assets/e2a28935-4e1a-4fc5-b23b-7d91c5b7d325)
+![image](https://github.com/user-attachments/assets/a1ae4722-17d2-47c8-9470-14245e14d099)
+
 
 *   `/get_profile` - Получение данных профиля
-![image](https://github.com/user-attachments/assets/1541d1d9-8300-49a4-bfd4-d4e09a86e1eb)
+![image](https://github.com/user-attachments/assets/4d6df45d-9975-4960-8b5b-741de0f3a580)
 
 *  `/log_water <количество>` - Запись выпитой воды
 ![image](https://github.com/user-attachments/assets/1ce47b92-667d-4d52-9e39-9ee95089f106)
@@ -47,10 +48,11 @@
 
 *   `/log_workout` - Запуск записи тренировки
  ![image](https://github.com/user-attachments/assets/0f6b7a3b-f3e1-45eb-94ea-7de8ac66de80)
-![image](https://github.com/user-attachments/assets/33da2153-b30d-4197-8d7b-e5ea9ce42d47)
-
+ ![image](https://github.com/user-attachments/assets/33da2153-b30d-4197-8d7b-e5ea9ce42d47)
 
 *   `/check_progress` - Получение отчета о прогрессе
+ ![image](https://github.com/user-attachments/assets/33f046ee-9955-40a1-8bcd-3dd097bc3dfb)
+
 *   `/get_chart` - Получение графика
 
 ## 🛠️ Технологии
