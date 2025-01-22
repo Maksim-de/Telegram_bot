@@ -43,7 +43,6 @@
 
 *   `/log_food <название еды> <вес в граммах>` - Запись съеденной еды
 ![image](https://github.com/user-attachments/assets/c162e4a5-13ea-42b3-92e6-f4f06b033d1e)
-
 ![image](https://github.com/user-attachments/assets/12542761-384b-408c-a197-1bca4b32af32)
 
 *   `/log_workout` - Запуск записи тренировки. При длительных тренировках увеличивается дневное потребление воды
