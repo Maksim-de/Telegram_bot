@@ -1,7 +1,6 @@
 import aiohttp
 import asyncio
 from config import *
-from yandex_cloud_ml_sdk import YCloudML
 
 async def api_request(TOKEN_WEATHER, option):
     if TOKEN_WEATHER != '':
