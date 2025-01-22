@@ -659,8 +659,4 @@ async def new_day(message: Message):
     await message.reply(
         f"✅ {hbold('Все достижения за день обнулены! Готов к новым свершениям!')}",
         parse_mode="HTML"
-<<<<<<< HEAD
     )
-=======
-    )
->>>>>>> bcc87c095024db9b6a80ffe7d8cf2a309c8a1740
