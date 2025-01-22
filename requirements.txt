@@ -1,4 +1,4 @@
 aiogram==3.15.0
 python-dotenv
-yandex-cloud-ml-sdk
+
 

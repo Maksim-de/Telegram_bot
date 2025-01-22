@@ -7,8 +7,6 @@ from api_handler import *
 from aiogram.utils.markdown import hbold, hitalic, hunderline, text, code
 from config import TOKEN_WEATHER
 from datetime import datetime
-import matplotlib.pyplot as plt
-import matplotlib.dates as mdates
 import io
 
 router = Router()
