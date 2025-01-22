@@ -46,9 +46,12 @@
 
 ![image](https://github.com/user-attachments/assets/12542761-384b-408c-a197-1bca4b32af32)
 
-*   `/log_workout` - Запуск записи тренировки
+*   `/log_workout` - Запуск записи тренировки. При длительных тренировках увеличивается дневное потребление воды
  ![image](https://github.com/user-attachments/assets/0f6b7a3b-f3e1-45eb-94ea-7de8ac66de80)
  ![image](https://github.com/user-attachments/assets/33da2153-b30d-4197-8d7b-e5ea9ce42d47)
+Пример увеличения нормы воды длительной тренировки
+ ![image](https://github.com/user-attachments/assets/c4f43d82-5713-4d1d-bdf7-25fe777201d2)
+
 
 *   `/check_progress` - Получение отчета о прогрессе
  ![image](https://github.com/user-attachments/assets/33f046ee-9955-40a1-8bcd-3dd097bc3dfb)
