@@ -276,17 +276,17 @@ async def callbacks_num(callback: types.CallbackQuery, state: FSMContext):
         norma = target * 1.725
         await state.update_data(norma=norma)
     if action == "weight_high":
-        tagret = norma + 450
+        target = norma + 450
         activity = "Набор веса"
         await state.update_data(activity=activity)
         await state.update_data(target=target)
     elif action == "weight_stogn":
-        tagret = norma
+        target = norma
         activity = "Поддержание веса"
         await state.update_data(activity=activity)
         await state.update_data(target=target)
     else:
-        tagret = norma - 450
+        target = norma - 450
         activity = "Похудение/сушка"
         await state.update_data(activity=activity)
         await state.update_data(target=target)
@@ -463,9 +463,8 @@ async def get_profile(message: Message):
         f"🚻 {hbold('Пол:')} {gender}\n",
         f"📏 {hbold('Рост:')} {height} см\n",
         f"⚖️ {hbold('Вес:')} {weight} кг\n",
-        f"🔥 {hbold('Среднесуточная потребность в калориях:')} {norma:.2f}\n",
         f"🎯 {hbold('Ваша цель:')} {activity}\n",
-        f"🎯 {hbold('Целевое количество калорий:')} {int(target)}\n",
+        f"🔥 {hbold('Целевое количество калорий:')} {int(target)}\n",
         f"💧 {hbold('Требуемое количество жидкости:')} {int(water)} мл\n",
         f"🏙️ {hbold('Город:')} {city}\n",
         f"💧 {hbold('Выпито воды:')} {water_now} мл\n",
@@ -504,12 +503,10 @@ async def check_progress(message: Message):
         target_percentage = (target_now / float(target)) * 100
     else:
         target_percentage = 0
-    target_percentage = 0
     response_text = text(
         f"📊 {hbold('Твой прогресс, ' + name + '!')}\n\n",
-        f"🔥 {hbold('Суточная норма калорий:')} {int(norma)} ккал\n",
         f"🎯 {hbold('Твоя цель:')} {activity}\n",
-        f"🎯 {hbold('Цель по калориям:')} {int(target)} ккал\n",
+        f"🔥 {hbold('Цель по калориям:')} {int(target)} ккал\n",
         f"💧 {hbold('Норма воды:')} {int(water)} мл\n",
         f"💧 {hbold('Выпито воды:')} {water_now} мл ({water_percentage:.1f}%)\n",
         f"🍽️ {hbold('Съедено калорий:')} {int(target_now)} ккал ({target_percentage:.1f}%)\n",

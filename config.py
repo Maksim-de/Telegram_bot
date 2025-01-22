@@ -8,6 +8,8 @@ load_dotenv()
 TOKEN = os.getenv("BOT_TOKEN")
 TOKEN_WEATHER = os.getenv("OPEN_API_WEATHER")
 API_EDA = os.getenv("API_KEY")
+APP_ID = os.getenv("APP_ID")
+APP_KEY = os.getenv("APP_KEY")
 
 if not TOKEN:
     raise ValueError("Переменная окружения BOT_TOKEN не установлена!")

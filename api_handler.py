@@ -23,8 +23,7 @@ async def api_request(TOKEN_WEATHER, option):
                 return 0
 
 # Замените на ваши ключи API
-APP_ID = "423af06d"
-APP_KEY = "1e5049cbe9ed1862147ff5346fcc4564"
+
 
 
 async def analyze_ingredient(session, query):
