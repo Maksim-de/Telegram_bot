@@ -8,6 +8,8 @@ from aiogram.utils.markdown import hbold, hitalic, hunderline, text, code
 from config import TOKEN_WEATHER
 from datetime import datetime
 import io
+import matplotlib.pyplot as plt
+import matplotlib.dates as mdates
 
 router = Router()
 
@@ -340,6 +342,12 @@ async def log_water(message: Message, state: FSMContext):
         try:
             water_now = int(message.text.split()[1])
             users[user_id]['water_now'] += water_now
+            # Добавили
+            if 'water_log' not in users[user_id]:
+                users[user_id]['water_log'] = []
+            users[user_id]['water_log'].append(
+                {"time": datetime.now(), "amount": water_now}
+            )
             await message.reply(
                  f"✅ {hbold('Отлично! Ты выпил(а)')} {hbold(f'{water_now} мл')} 💧\n"
                  f"{hitalic('Твой прогресс: ')} {users[user_id]['water_now']}/{users[user_id]['water']} мл",
@@ -372,7 +380,12 @@ async def log_food(message: Message):
             f"   {hbold('Вес:')} {int(totalweight)} г",
              parse_mode="HTML"
         )
-    food_log[user_id] = {"time": datetime.now(), "calories": calories, "weight": totalweight}
+    # Добавили для визуализации
+    if 'food_log' not in users[user_id]:
+        users[user_id]['food_log'] = []
+    users[user_id]['food_log'].append(
+        {"time": datetime.now(), "calories": calories, "weight": totalweight}
+    )
     users[user_id]['target_now'] = users[user_id]['target_now'] + calories
     if users[user_id]['target_now'] < users[user_id]['target']:
         await message.reply(
@@ -433,6 +446,13 @@ async def process_sport(message: Message, state: FSMContext):
             f"   {hitalic('Суммарно сожжено:')} {users[user_id]['burn']} ккал",
             parse_mode="HTML"
         )
+        if int(min) > 30:
+            users[user_id]['water'] = int(users[user_id]['water']) + 250
+            await message.reply(
+                f"🔥 {hbold('Длительная тренировка - выпей дополнительно 250 мл воды')}!\n"
+                f"   {hitalic('Дневная норма увеличена до :')} {users[user_id]['water']} мл",
+                parse_mode="HTML"
+            )
     except (ValueError, KeyError) as e:
         await message.answer(
             f"⚠️ {hitalic('Произошла ошибка! Пожалуйста, проверьте корректность ввода времени.')}\n"
@@ -514,3 +534,129 @@ async def check_progress(message: Message):
         sep="\n"
     )
     await message.reply(response_text, parse_mode="HTML")
+
+@router.message(Command("get_chart"))
+async def check_progress(message: Message):
+    user_id = message.from_user.id
+    # Построение и отправка графика
+    buf = await plot_daily_progress(user_id)
+    if buf:
+        await message.answer_photo(
+            photo=types.BufferedInputFile(buf.read(), filename="daily_progress.png")
+        )
+    else:
+        await message.reply("Нет данных для построения графика.")
+
+
+def get_water_log(user_id):
+    if user_id in users and 'water_log' in users[user_id]:
+        return users[user_id]['water_log']
+    else:
+        return []
+
+def get_food_log(user_id):
+    if user_id in users and 'food_log' in users[user_id]:
+        return users[user_id]['food_log']
+    else:
+        return []
+
+
+
+async def plot_daily_progress(user_id):
+    water_log = get_water_log(user_id)
+    food_log = get_food_log(user_id)
+
+    if not water_log and not food_log:
+        return None
+
+    # Получаем текущую дату
+    today = datetime.now().date()
+
+    # Подготавливаем данные для графиков
+    water_times = []
+    water_amounts = []
+    cumulative_water = 0
+    for log in water_log:
+        if isinstance(log, dict) and 'time' in log and 'amount' in log and isinstance(log['amount'], (int, float)):
+             if log['time'].date() == today:
+                cumulative_water += log['amount']
+                water_times.append(log['time'])
+                water_amounts.append(cumulative_water)
+             else:
+                 print(f"Warning: Invalid water log entry: {log}")
+
+
+    food_times = []
+    food_calories = []
+    cumulative_calories = 0
+    for log in food_log:
+        if isinstance(log, dict) and 'time' in log and 'calories' in log and isinstance(log['calories'], (int, float)):
+             if log['time'].date() == today:
+                cumulative_calories += log['calories']
+                food_times.append(log['time'])
+                food_calories.append(cumulative_calories)
+        else:
+            print(f"Warning: Invalid food log entry: {log}")
+
+
+    # Создаем фигуру и ось
+    fig, ax = plt.subplots(figsize=(10, 6))
+
+    # График для воды
+    if water_times:
+        ax.plot(water_times, water_amounts, color='blue', label='Вода (мл)')
+
+    # График для калорий
+    if food_times:
+        ax.plot(food_times, food_calories, color='red', label='Калории (ккал)')
+
+
+    # Форматирование оси X
+    ax.xaxis.set_major_locator(mdates.HourLocator(interval=2))
+    ax.xaxis.set_major_formatter(mdates.DateFormatter('%H:%M'))
+    ax.set_xlabel('Время (часы)')
+    ax.tick_params(axis='x', rotation=45)
+
+    # Добавляем общую легенду
+    ax.legend(loc='upper left')
+
+    # Задаем временные границы
+    start_of_day = datetime.combine(today, datetime.min.time())
+    end_of_day = datetime.combine(today, datetime.max.time())
+    ax.set_xlim(start_of_day, end_of_day)
+    ax.set_ylabel('Сумма воды (мл) / Сумма калорий (ккал)')
+    fig.tight_layout()
+
+    # Сохраняем график в буфер памяти
+    buf = io.BytesIO()
+    plt.savefig(buf, format='png')
+    buf.seek(0)
+    plt.close(fig)
+
+    return buf
+
+@router.message(Command("new_day"))
+async def new_day(message: Message):
+    user_id = message.from_user.id
+    if user_id not in users:
+          await message.reply(
+            f"⚠️ {hitalic('Профиль не найден! Пожалуйста, сначала заполните его командой /set_profile.')}",
+            parse_mode="HTML"
+        )
+          return
+    users[user_id]['water_now'] = 0
+    users[user_id]['target_now'] = 0
+    users[user_id]['burn'] = 0
+    weight = users[user_id]['weight']
+    city = users[user_id]['city']
+    temp_now = await api_request(TOKEN_WEATHER, city)
+    water = weight * 30
+    print("Температура в ", city, temp_now)
+    if temp_now > 20:
+        water += 500
+    users[user_id]['water'] = water
+
+    await message.reply(
+        f"✅ {hbold('Все достижения за день обнулены! Готов к новым свершениям!')}",
+        parse_mode="HTML"
+    )
