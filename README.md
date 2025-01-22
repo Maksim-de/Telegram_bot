@@ -71,19 +71,19 @@
 
 1.  Клонируйте репозиторий:
     ```
-    git clone https://github.com/yourusername/yourrepository
+    git clone https://github.com/Maksim-de/Telegram_bot.git
     ```
 2.  Установите зависимости:
     ```bash
-    pip install -r requirements.txt
+    pip install -r .\Telegram_bot\requirements.txt
     ```
 3.  Создайте файл `.env` и добавьте в него
     ```
     BOT_TOKEN = "Токен вашего бота"
     OPEN_API_WEATHER = 'API ключ Openweathermap'
-    API_KEY = ''
+    API_KEY = 'API ключ API.Edamam'
     APP_ID = "Идентификатор приложения API.Edamam"
-    APP_KEY = "API ключ API.Edamam"
+    APP_KEY = "Ключ приложения API.Edamam"
     ```
 5.  Запустите бота:
     ```bash
